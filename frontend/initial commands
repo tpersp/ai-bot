@@ -1,0 +1,46 @@
+cd ai-bot
+npx create-vite@latest frontend --template react
+cd frontend
+npm install
+---
+npm install axios
+---
+
+---
+Minimal Example: frontend/src/App.jsx
+---
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+function secondsToDHMS(seconds) {
+  seconds = Number(seconds);
+  const d = Math.floor(seconds / (3600*24));
+  const h = Math.floor(seconds % (3600*24) / 3600);
+  const m = Math.floor(seconds % 3600 / 60);
+  const s = Math.floor(seconds % 60);
+  return `${d}d ${h}h ${m}m ${s}s`;
+}
+
+export default function App() {
+  const [system, setSystem] = useState(null);
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/system")
+      .then(res => setSystem(res.data));
+  }, []);
+
+  if (!system) return <div>Loading...</div>;
+  return (
+    <div style={{padding: "2rem", fontFamily: "sans-serif"}}>
+      <h1>AI Bot Dashboard</h1>
+      <h2>Server Status</h2>
+      <ul>
+        <li>Uptime: {secondsToDHMS(system.uptime)}</li>
+        <li>RAM: {Math.round(system.ram.used/1e9)}GB / {Math.round(system.ram.total/1e9)}GB ({system.ram.percent}%)</li>
+        <li>CPU: {system.cpu}%</li>
+        <li>Disk: {Math.round(system.disk.used/1e9)}GB / {Math.round(system.disk.total/1e9)}GB ({system.disk.percent}%)</li>
+      </ul>
+      {/* Expand with features, user list, bot status, etc. */}
+    </div>
+  );
+}

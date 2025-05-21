@@ -1,0 +1,7 @@
+discord.py
+flask
+flask-cors
+python-dotenv
+sqlalchemy
+psutil
+requests
