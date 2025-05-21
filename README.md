@@ -1,1 +1,1 @@
-(Include step-by-step setup: pip install -r requirements.txt, python bot/main.py, python dashboard/app.py, cd frontend && npm run dev)
+So far, a dead project.
